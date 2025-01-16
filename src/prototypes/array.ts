@@ -1,14 +1,38 @@
 export class SArray<T> {
   [n: number]: T
+  declare find: Array<T>["find"];
+  declare findIndex: Array<T>["findIndex"];
   declare length: Array<T>["length"];
+  declare map: Array<T>["map"];
+  declare push: Array<T>["push"];
   declare sort: Array<T>["sort"];
 
   constructor() {
     Object.defineProperties(Array.prototype, {
+      edit: { value: this.edit },
       random: { value: this.random },
       shuffle: { value: this.shuffle },
       toSet: { value: this.toSet },
     });
+  }
+
+  /** @DJSProtofy */
+  edit(
+    filter: (value: T, index: number, array: T[]) => boolean,
+    edit: (value: T, index: number, array: T[]) => T,
+    orPush?: () => T,
+  ) {
+    let push = true;
+
+    for (let i = 0; i < this.length; i++) {
+      if (filter(this[i], i, this as any)) {
+        this[i] = edit(this[i], i, this as any);
+        push = false;
+        break;
+      }
+    }
+
+    if (push && typeof orPush === "function") this.push(orPush());
   }
 
   /**
