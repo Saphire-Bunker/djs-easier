@@ -17,24 +17,24 @@ export class SArray<T> {
    * @returns `undefined` when array is `empty` and amount is `undefined`
    * @returns `array` when amount is `number`
    */
-  random(amount?: number, allowDuplicates?: boolean) {
+  random(amount?: number, denyDuplicates?: boolean) {
     if (typeof amount === "number") {
       if (this.length === 0 || isNaN(amount) || amount < 1) return [];
 
-      const length = allowDuplicates ? amount : Math.min(amount, this.length);
+      const length = denyDuplicates ? Math.min(amount, this.length) : amount;
 
       const result: T[] = [];
       let i = 0;
 
-      if (allowDuplicates) {
-        while (i < length) result[i++] = this[Math.floor(Math.random() * length)];
+      if (denyDuplicates) {
+        const clone = Array.from(this);
+
+        while (i < length) result[i++] = clone.splice(Math.floor(Math.random() * clone.length), 1)[0];
 
         return result;
       }
 
-      const clone = Array.from(this);
-
-      while (i < length) result[i++] = clone.splice(Math.floor(Math.random() * clone.length), 1)[0];
+      while (i < length) result[i++] = this[Math.floor(Math.random() * length)];
 
       return result;
     }

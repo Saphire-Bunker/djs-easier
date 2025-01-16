@@ -14,8 +14,8 @@ describe("Testing Array#random", () => {
     assert([].random() === undefined);
   });
 
-  test("random(number)", () => {
-    const actual = array.random(array.length);
+  test("random(number, denyDuplicates)", () => {
+    const actual = array.random(array.length, true);
 
     assert(actual.every(v => array.includes(v)));
     assert.deepStrictEqual(actual.map(v => actual.lastIndexOf(v)).sort(), Array.from(Array(array.length).keys()));
