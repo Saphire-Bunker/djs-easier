@@ -118,7 +118,7 @@ declare global {
   interface Array<T> extends SArray<T> {
     random(): T
     random(amount: number): T[]
-    random(amount: number, allowDuplicates: boolean): T[]
+    random(amount: number, denyDuplicates: boolean): T[]
     random(amount: any): T;
   }
 
